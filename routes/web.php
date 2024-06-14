@@ -3,6 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\RegisteredUserController;
 use App\Models\job;
 
 
@@ -19,33 +20,6 @@ Route::get('/contact', function () {
 
 Route::resource('jobs', JobController::class);
 
-// Route::controller(JobController::class)->group(function () {
-
-//     // Index get all jobs
-//     Route::get('/jobs', 'index');
-
-//     // Create a new job
-//     Route::get('/jobs/create',  'create');
-
-
-//     // Show a single job
-//     Route::get('/jobs/{job}',  'show');
-
-
-
-//     // Store a new job
-//     Route::post('/jobs', 'store');
-
-
-//     // edit a job
-//     Route::get('/jobs/{job}/edit', 'edit');
-
-
-
-//     // update a job
-//     Route::patch('/jobs/{job}', 'update');
-
-
-//     // Destroy a job
-//     Route::delete('/jobs/{job}', 'destroy');
-// });
+//Auth
+Route::get('/register', [RegisteredUserController::class, 'create']);
+Route::post('/register', [RegisteredUserController::class, 'store']);
