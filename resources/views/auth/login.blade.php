@@ -3,7 +3,7 @@
         Log In
     </x-slot:heading>
 
-    <form method="POST" action="/jobs">
+    <form method="POST" action="/login">
         @csrf
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
@@ -27,7 +27,7 @@
                         <x-form-label for="password">Password</x-form-label>
 
                         <div class="mt-2">
-                            <x-form-input name="password" id="password" placeholder="E-mail" type="password"
+                            <x-form-input name="password" id="password" placeholder="Password" type="password"
                                 required />
 
                             <X-form-error name="password" />
