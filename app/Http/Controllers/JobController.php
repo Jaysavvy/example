@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\job;
+use App\Models\User;
+use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate as FacadesGate;
 
 class JobController extends Controller
 {
@@ -46,7 +50,9 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
-        Job::find($job);
+
+        FacadesGate::authorize('edit-job', $job);
+
         return view('jobs.edit', ['job' => $job]);
     }
 
@@ -54,6 +60,8 @@ class JobController extends Controller
     public function update(Job $job)
     {
         //authorize (On Hold...)
+        FacadesGate::authorize('edit-job', $job);
+
 
         //validate
         request()->validate([
@@ -86,6 +94,8 @@ class JobController extends Controller
     public function destroy(Job $job)
     {
         // authorize (On Hold...)
+        FacadesGate::authorize('edit-job', $job);
+
 
         // delete the job
         $job->delete();
