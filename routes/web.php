@@ -9,7 +9,14 @@ use App\Models\job;
 
 
 
+Route::get('test', function () {
 
+    $job = Job::first();
+
+    App\Jobs\TranslateJob::dispatch();
+
+    return 'Tested';
+});
 
 Route::get('/', function () {
     return view('home');
@@ -19,8 +26,22 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::resource('jobs', JobController::class)->only(['index', 'show']);
-Route::resource('jobs', JobController::class)->except(['index', 'show'])->middleware('auth');
+Route::get('/jobs', [JobController::class, 'index']);
+Route::get('/jobs/create', [jobController::class, 'create']);
+Route::post('/jobs', [jobController::class, 'store'])->middleware('auth');
+Route::get('/jobs/{job}', [jobController::class, 'show']);
+
+Route::get('/jobs/{job}/edit', [jobController::class, 'edit'])
+    ->middleware('auth')
+    ->can('edit', 'job');
+
+Route::patch('/jobs/{job}', [JobController::class, 'update'])->middleware('auth')->can('edit-job', 'job');
+Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->middleware('auth')->can('edit-job', 'job');
+
+
+
+// Route::resource('jobs', JobController::class)->only(['index', 'show']);
+// Route::resource('jobs', JobController::class)->except(['index', 'show'])->middleware('auth');
 
 //Auth
 Route::get('/register', [RegisteredUserController::class, 'create']);

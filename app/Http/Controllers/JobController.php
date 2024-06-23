@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use App\Models\job;
 use App\Models\User;
-use Illuminate\Auth\Access\Gate;
+use App\Mail\JobPosted;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate as FacadesGate;
+use Illuminate\Support\Facades\Mail;
 
 class JobController extends Controller
 {
@@ -38,14 +39,19 @@ class JobController extends Controller
             'salary' => ['required']
         ]);
 
-        Job::create([
+        $job = Job::create([
             'title' => request('title'),
             'salary' => request('salary'),
-            'employer_id' => 1,
+            'employer_id' => 1
         ]);
+
+        Mail::to($job->employer->user)->queue(
+            new JobPosted($job)
+        );
 
         return redirect('/jobs');
     }
+
 
 
     public function edit(Job $job)
